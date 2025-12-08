@@ -1,7 +1,7 @@
 NAME = minirt
 TEST_NAME = minirt_test
 # 📁 Kaynak dosyalar
-SRCS = ray.c camera.c color.c render.c sphere.c vector_calc.c vector.c
+SRCS = ray.c camera.c color.c render.c sphere.c  vector.c
 MAIN = main.c
 TEST = test.c
 MAIN_OBJS = $(SRCS:.c=.o) main.o
