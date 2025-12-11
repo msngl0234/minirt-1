@@ -1,7 +1,7 @@
 NAME = minirt
 TEST_NAME = minirt_test
 # 📁 Kaynak dosyalar
-SRCS = ray.c camera.c color.c render.c sphere.c  vector.c
+SRCS = ray.c camera.c color.c render.c sphere.c  vector.c plane.c
 MAIN = main.c
 TEST = test.c
 MAIN_OBJS = $(SRCS:.c=.o) main.o
@@ -12,9 +12,11 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -std=c99
 
 # 🧱 MiniLibX ayarları (macOS)
-MLX_DIR = minilibx
+MLX_DIR = minilibx-linux
 MLX = $(MLX_DIR)/libmlx.a
-MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
+MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
+
+#MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
 
 # 🎯 Varsayılan hedef
 all: $(NAME)
