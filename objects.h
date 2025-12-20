@@ -24,5 +24,4 @@ t_plane		*create_plane(double px, double py, double pz, double nx, double ny,
 //int			hit_plane(t_plane *pl, t_ray *ray);
 int			hit_plane(t_plane *pl, t_ray *ray, double *t);
 
-
 #endif

@@ -5,6 +5,8 @@
 # define HEIGHT 1080
 # define SCREEN_WIDTH 1600
 # define SCREEN_HEIGHT 900
+# include "camera.h"
+
 typedef struct s_data
 {
 	void *img;          // mlx_new_image tarafından döndürülen işaretçi

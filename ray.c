@@ -3,7 +3,7 @@
 #include "ray.h"
 #include <stdio.h>
 
-t_point3	ray_at(t_ray *ray, double t)
+t_vec3	ray_at(t_ray *ray, double t)
 {
 	return (vec_add(ray->origin, vec_mul(ray->direction, t)));
 }
