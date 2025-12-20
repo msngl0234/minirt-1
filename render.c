@@ -8,6 +8,9 @@
 #include "mlx_utils.h"
 #include "shading_utils.h"
 #include "lighting_utils.h"
+#include "shadow_utils.h"
+#include "shading_utils.h"
+
 
 #define DEBUG_NORMAL 0
 
@@ -18,21 +21,18 @@ void render(t_data *data, t_camera *cam)
     t_sphere *sphere;
 	t_sphere *sphere2;
     t_plane *plane;
-
-    sphere  = create_sphere(0.6, 0.0, 0.0, 0.0); 
-    sphere2 = create_sphere(0.2, 0.0, 0.0, 0.0); 
-
-
-
-    plane = create_plane(0, -3, 0, 0, 15, 0);
     t_vec3	light_pos;
     double	ambient;
     double	intensity;
 
-    light_pos = vec(-5.0, 4.0, -2.0);
+    sphere  = create_sphere(1.5, 0.0, 0.0, 1.6);
+    sphere2 = create_sphere(1.7, 1.6, 0.0, 0.0); 
+    plane   = create_plane(0, -1.9, 0, 0, 1, 0);
 
+    light_pos = vec(2.0, 4.0, -2.0);
     ambient = 0.2;
     intensity = 0.8;
+
     for (i = 0; i < SCREEN_WIDTH; i++)
     {
         for (j = 0; j < SCREEN_HEIGHT; j++)
@@ -92,20 +92,28 @@ void render(t_data *data, t_camera *cam)
             #if DEBUG_NORMAL
                 my_mlx_pixel_put(data, i, j, normal_to_color(n));
             #else
+                int shadow;
+
+                shadow = is_in_shadow(p, n, light_pos, sphere, sphere2, plane);
                 my_mlx_pixel_put(data, i, j,
-                    lambert_shade(base, p, n, light_pos, ambient, intensity));
+                    lambert_shade(base, p, n, light_pos, ambient,
+                        shadow ? 0.0 : intensity));
             #endif
             }
             else if (hit_p)
-            {
+{
                 p = ray_at(&ray, t_p);
                 n = plane_normal(plane, &ray);
 
             #if DEBUG_NORMAL
                 my_mlx_pixel_put(data, i, j, normal_to_color(n));
             #else
+                int shadow;
+
+                shadow = is_in_shadow(p, n, light_pos, sphere, sphere2, plane);
                 my_mlx_pixel_put(data, i, j,
-                    lambert_shade(0xAAAAAA, p, n, light_pos, ambient, intensity));
+                    lambert_shade(0xAAAAAA, p, n, light_pos, ambient,
+                        shadow ? 0.0 : intensity));
             #endif
             }
             else
