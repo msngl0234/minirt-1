@@ -1,4 +1,6 @@
 #include "shading_utils.h"
+#include "minirt.h"
+#include "objects.h"
 
 static int	clampi(int x, int min, int max)
 {
@@ -34,4 +36,15 @@ t_vec3	plane_normal(t_plane *pl, t_ray *ray)
 	if (vec_dot(pl->normal, ray->direction) > 0)
 		return (vec_mul(pl->normal, -1));
 	return (pl->normal);
+}
+
+
+t_vec3 cylinder_normal(t_cylinder *cy, t_vec3 p)
+{
+    
+    double m = vec_dot(vec_sub(p, cy->center), cy->axis);
+    
+    t_vec3 axis_point = vec_add(cy->center, vec_mul(cy->axis, m));
+    
+    return (vec_normalize(vec_sub(p, axis_point)));
 }
