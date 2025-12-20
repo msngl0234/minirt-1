@@ -7,6 +7,9 @@
 #include <stdio.h>
 #include "mlx_utils.h"
 #include "shading_utils.h"
+#include "lighting_utils.h"
+
+#define DEBUG_NORMAL 0
 
 void render(t_data *data, t_camera *cam)
 {
@@ -16,12 +19,20 @@ void render(t_data *data, t_camera *cam)
 	t_sphere *sphere2;
     t_plane *plane;
 
-sphere  = create_sphere(0.6, 0.0, 0.0, 0.0);
-sphere2 = create_sphere(0.5, 0.0, 0.0, 0.0);
+    sphere  = create_sphere(0.6, 0.0, 0.0, 0.0); 
+    sphere2 = create_sphere(0.2, 0.0, 0.0, 0.0); 
+
 
 
     plane = create_plane(0, -3, 0, 0, 15, 0);
+    t_vec3	light_pos;
+    double	ambient;
+    double	intensity;
 
+    light_pos = vec(-5.0, 4.0, -2.0);
+
+    ambient = 0.2;
+    intensity = 0.8;
     for (i = 0; i < SCREEN_WIDTH; i++)
     {
         for (j = 0; j < SCREEN_HEIGHT; j++)
@@ -65,19 +76,37 @@ sphere2 = create_sphere(0.5, 0.0, 0.0, 0.0);
 
             if (hit_any_sphere && (!hit_p || t_s < t_p))
             {
+                int	base;
+
                 p = ray_at(&ray, t_s);
                 if (which_sphere == 1)
                     n = sphere_normal(sphere, p);
                 else
                     n = sphere_normal(sphere2, p);
 
+                if (which_sphere == 1)
+                    base = 0xFF0000;
+                else
+                    base = 0x00AEEF;
+
+            #if DEBUG_NORMAL
                 my_mlx_pixel_put(data, i, j, normal_to_color(n));
+            #else
+                my_mlx_pixel_put(data, i, j,
+                    lambert_shade(base, p, n, light_pos, ambient, intensity));
+            #endif
             }
             else if (hit_p)
             {
                 p = ray_at(&ray, t_p);
                 n = plane_normal(plane, &ray);
+
+            #if DEBUG_NORMAL
                 my_mlx_pixel_put(data, i, j, normal_to_color(n));
+            #else
+                my_mlx_pixel_put(data, i, j,
+                    lambert_shade(0xAAAAAA, p, n, light_pos, ambient, intensity));
+            #endif
             }
             else
                 my_mlx_pixel_put(data, i, j, 0x87CEEB);
