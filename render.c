@@ -11,10 +11,10 @@
 
 static void	init_scene(t_scene_objs *objs)
 {
-	objs->s1 = create_sphere(1.5, 0.0, 0.0, 1.6);
-	objs->s2 = create_sphere(1.7, 1.6, 0.0, 0.0);
-	objs->pl = create_plane(0, -1.9, 0, 0, 1, 0);
-	objs->cy = create_cylinder(vec(0, 0, -3.0), vec(0, 0, 1), 0.8, 3.0);
+	objs->s1 = create_sphere(0.5, 0.0, 1.5, 1.6);
+	objs->s2 = create_sphere(0.7, 0.6, -1.5, 1.6);
+	objs->pl = create_plane(0, 0, 0, 1, 0, 0);
+	objs->cy = create_cylinder(vec(.9, 0.0, 0), vec(0, 0, 3), 0.8, 3.0);
 }
 
 static int	get_closest_hit(t_ray *ray, t_scene_objs *objs, double *closest_t)
@@ -78,7 +78,7 @@ static void	process_pixel(t_data *d, int x, int y, t_ray *r, t_scene_objs *obs)
 	t_vec3	p;
 	t_vec3	n;
 	int		col;
-	t_vec3	light = vec(.0, .0, -3.0);
+	t_vec3	light = vec(3.0, .0, 10.0);
 
 	id = get_closest_hit(r, obs, &t);
 	if (id == 0)

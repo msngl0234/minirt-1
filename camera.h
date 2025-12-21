@@ -3,12 +3,13 @@
 
 # include "vector.h"
 
+
 # define CAMERA_POS_X  12.0
 # define CAMERA_POS_Y  0.0
 # define CAMERA_POS_Z  0.0
 
 # define ASPECT_RATIO  (16.0 / 9.0)
-# define FOV           70.0
+# define FOV           80.0
 
 typedef struct s_camera {
     t_vec3  origin;
